@@ -2,7 +2,7 @@
 
 sudo apt-get upgrade
 sudo apt-get install libgles2-mesa libgles2-mesa-dev xorg-dev
-sudo apt-get install python3 python3-pip chromium-chromedriver xvfb install libopenjp2-7 openexr libavcodec-dev ffmpeg liblapack-dev libatlas-base-dev mpv -y
+sudo apt-get install python3 python3-pip chromium-chromedriver xvfb libopenjp2-7 openexr libavcodec-dev ffmpeg liblapack-dev libatlas-base-dev mpv -y
 
 pip3 install pyvirtualdisplay selenium 2captcha-python pillow opencv-python
 
