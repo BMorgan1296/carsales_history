@@ -9,4 +9,4 @@ kill $pids >/dev/null 2>&1
 pids=$(pgrep "python")
 kill $pids >/dev/null 2>&1
 
-python3 selenium_test.py
+python3 scrape.py

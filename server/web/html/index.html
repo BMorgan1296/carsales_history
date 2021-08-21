@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index</title>
+</head>
+
+<body onload="populate_saved_searches()">
+    <h1>CarSales History</h1>
+    <div>
+        <a href="https://github.com/BMorgan1296">By BMorgan1296</a>
+    </div>
+    <div>
+        <label for="saved_searches">Choose a search to browse:</label>
+        <select id="saved_searches">
+        </select>
+        <button onclick="getsearch()">Go</button>
+    </div>
+    <div id="listings_container">
+    </div>
+</body>
+
+</html>
+<script type="text/javascript">
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
+}
+
+function populate_saved_searches() {
+    var http = new XMLHttpRequest();
+    var url = "/getsearches";
+    http.open("POST", url, true);
+    http.onreadystatechange = function() { //Call a function when the state changes.
+        if (http.readyState == 4 && http.status == 200) {
+            search_names = JSON.parse(http.responseText);
+            select = document.getElementById('saved_searches');
+            for (var i = 0; i < search_names.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = search_names[i];
+                opt.innerHTML = search_names[i];
+                select.appendChild(opt);
+            }
+            getsearch()
+        }
+    }
+    http.send();
+}
+
+function getsearch()
+{
+    var http = new XMLHttpRequest();
+    var url = "/getsearch";
+    var data = {search : select.value}
+    var param = JSON.stringify(data)
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/json");
+    http.onreadystatechange = function() { //Call a function when the state changes.
+        if (http.readyState == 4 && http.status == 200) {
+            listings_container = document.getElementById('listings_container');
+            response_listings = JSON.parse(http.responseText);
+            for (var i = 0; i < response_listings.length; i++) {
+                var listing = document.createElement('div');
+                listing.class = "listing";
+                listing.id = response_listings[i].id;
+                listing.innerHTML = response_listings[i].id + " " + response_listings[i].title + " " + timeConverter(response_listings[i].price_history[response_listings[i].price_history.length-1][1]);
+
+                listings_container.appendChild(listing);
+                var img = document.createElement('img');
+                img.src = "/img/" + response_listings[i].id + ".jpg";
+                listing.appendChild(img);
+            }
+        }
+    }
+    http.send(param);
+}
+</script>
