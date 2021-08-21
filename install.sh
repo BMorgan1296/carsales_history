@@ -6,6 +6,9 @@ sudo apt-get install python3 python3-pip chromium-chromedriver xvfb libopenjp2-7
 
 pip3 install pyvirtualdisplay selenium 2captcha-python pillow opencv-python filelock
 
+git submodule init
+git submodule update
+
 echo "Please follow this guide to get hardware acceleration: https://lemariva.com/blog/2020/08/raspberry-pi-4-video-acceleration-decode-chromium"
 
 mkdir saved_searches
